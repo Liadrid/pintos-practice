@@ -32,12 +32,12 @@ static void real_time_delay (int64_t num, int32_t denom);
 
 void thread_blocked_ticks_update(struct thread *t, void *aux)
 {
-	if(t->blocked_ticks > 0)
-	{
-		(t->blocked_ticks)--;
-		if(t->blocked_ticks == 0)
-				thread_unblock(t);
-	}
+  if(t->blocked_ticks > 0)
+  {
+    (t->blocked_ticks)--;
+    if(t->blocked_ticks == 0)
+      thread_unblock(t);
+  }
 }
 
 /* Sets up the timer to interrupt TIMER_FREQ times per second,
