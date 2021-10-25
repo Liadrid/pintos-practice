@@ -16,7 +16,7 @@
 #endif
 
 bool thread_priority_cmp(const struct list_elem *a, const struct list_elem *b, void *aux UNUSED)
-{
+{//根据优先级进行比较
 	return list_entry(a,struct thread, elem)->priority > list_entry(b,struct thread, elem)->priority;
 } 
 
