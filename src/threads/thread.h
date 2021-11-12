@@ -80,6 +80,15 @@ typedef int tid_t;
    only because they are mutually exclusive: only a thread in the
    ready state is on the run queue, whereas only a thread in the
    blocked state is on a semaphore wait list. */
+   
+/* List of processes in THREAD_READY state, that is, processes
+   that are ready to run but not actually running. */
+static struct list ready_list;
+
+/* List of all processes.  Processes are added to this list
+   when they are first scheduled and removed when they exit. */
+static struct list all_list;
+
 struct thread
   {
     /* Owned by thread.c. */
@@ -89,6 +98,12 @@ struct thread
     uint8_t *stack;                     /* Saved stack pointer. */
     int priority;                       /* Priority. */
     int64_t blocked_ticks;              /* To record the blocked time */
+<<<<<<< HEAD
+=======
+    int base_priority;                  /* Original priority */
+    struct list locks;                  /* Locks held */
+    struct lock *lock_waiting;          /* Locks waiting for */
+>>>>>>> db86c24 (third update)
     struct list_elem allelem;           /* List element for all threads list. */
 
     /* Shared between thread.c and synch.c. */
@@ -107,6 +122,10 @@ struct thread
    If true, use multi-level feedback queue scheduler.
    Controlled by kernel command-line option "-o mlfqs". */
 extern bool thread_mlfqs;
+
+bool thread_cmp_priority(const struct list_elem *a, const struct list_elem *b, void *aux UNUSED);
+bool lock_cmp_priority (const struct list_elem *a, const struct list_elem *b, void *aux UNUSED);
+bool cond_sema_cmp_priority (const struct list_elem *a, const struct list_elem *b, void *aux UNUSED);
 
 void thread_init (void);
 void thread_start (void);
@@ -138,5 +157,10 @@ int thread_get_nice (void);
 void thread_set_nice (int);
 int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
+
+void thread_hold_the_lock (struct lock *lock);
+void thread_donate_priority (struct thread *t);
+void thread_remove_lock (struct lock *lock);
+void thread_update_priority (struct thread *t);
 
 #endif /* threads/thread.h */
