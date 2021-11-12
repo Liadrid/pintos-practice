@@ -3,12 +3,20 @@
 
 #include <list.h>
 #include <stdbool.h>
+#include "threads/thread.h"
 
 /* A counting semaphore. */
 struct semaphore 
   {
     unsigned value;             /* Current value. */
     struct list waiters;        /* List of waiting threads. */
+  };
+
+/* One semaphore in a list. */
+struct semaphore_elem 
+  {
+    struct list_elem elem;              /* List element. */
+    struct semaphore semaphore;         /* This semaphore. */
   };
 
 void sema_init (struct semaphore *, unsigned value);
@@ -22,6 +30,8 @@ struct lock
   {
     struct thread *holder;      /* Thread holding lock (for debugging). */
     struct semaphore semaphore; /* Binary semaphore controlling access. */
+    struct list_elem elem;
+    int max_priority;
   };
 
 void lock_init (struct lock *);
