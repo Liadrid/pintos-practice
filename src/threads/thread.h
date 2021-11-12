@@ -98,12 +98,9 @@ struct thread
     uint8_t *stack;                     /* Saved stack pointer. */
     int priority;                       /* Priority. */
     int64_t blocked_ticks;              /* To record the blocked time */
-<<<<<<< HEAD
-=======
     int base_priority;                  /* Original priority */
     struct list locks;                  /* Locks held */
     struct lock *lock_waiting;          /* Locks waiting for */
->>>>>>> db86c24 (third update)
     struct list_elem allelem;           /* List element for all threads list. */
 
     /* Shared between thread.c and synch.c. */
