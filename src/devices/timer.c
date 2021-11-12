@@ -100,10 +100,11 @@ void
 timer_sleep (int64_t ticks) 
 {
   ASSERT (intr_get_level () == INTR_ON);
-
-	thread_current ()-> blocked_ticks = ticks;
-	intr_set_level (INTR_OFF);
-	thread_block();
+  if(ticks <= 0) return; //ticks must not less than or equal to zero
+	
+  thread_current ()-> blocked_ticks = ticks;
+  intr_set_level (INTR_OFF);
+  thread_block();
   intr_set_level (INTR_ON);
 
 }
